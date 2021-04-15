@@ -2,6 +2,10 @@ package me.tcambron.chatbot;
 
 import java.util.Scanner;
 
+/**
+ * @author Tyler Cambron
+ *
+ */
 public class ChatBotApp {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
@@ -11,7 +15,7 @@ public class ChatBotApp {
 		while (chavez.isActive()) {
 			System.out.print(": ");
 			String message = input.nextLine();
-			ChatResponse response = new ChatResponse(message, chavez.getResponse());
+			ChatResponse response = new ChatResponse(message, chavez.getResponse(), chavez.getName());
 			chavez.interact(response);
 			System.out.println(" ");
 		}

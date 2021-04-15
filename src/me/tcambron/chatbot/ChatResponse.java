@@ -1,14 +1,17 @@
 package me.tcambron.chatbot;
-
+/**
+ * @author Tyler Cambron
+ *
+ */
 public class ChatResponse implements ChatTone {
 	protected String message;
 	protected String response;
 	protected ChatResponse lastResponse;
 	
-	public ChatResponse(String message, ChatResponse lastResponse) {
+	public ChatResponse(String message, ChatResponse lastResponse, String botName) {
 		setMessage(message.toLowerCase());
 		setLastResponse(lastResponse);
-		setResponse(getResponseFromMessage(this));
+		setResponse(getResponseFromMessage(this, botName));
 	}
 	
 	public String getMessage() {

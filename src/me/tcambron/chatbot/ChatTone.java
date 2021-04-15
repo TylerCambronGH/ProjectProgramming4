@@ -1,11 +1,14 @@
 package me.tcambron.chatbot;
 
 import java.util.Random;
-
+/**
+ * @author Tyler Cambron
+ *
+ */
 public interface ChatTone {
 	final String[] CONFIRMATION_WORDS = { "ok", "yes", "indeed", "agree", "accept", "approve" };
 	final String[] DENIAL_WORDS = { "no", "deny", "disapprove" };
-	final String[] POSITIVE_WORDS = { "happy", "excite", "good", "great"};
+	final String[] POSITIVE_WORDS = { "happy", "excite", "good", "great", "cool" };
 	final String[] NEGATIVE_WORDS = { "sad", "boring", "bored", "bad", "terrible" };
 	final String[] VERBS = { "walk", "run", "sleep", "eat", "meet", "travel", "fly", "swim", "do", "jog", "type", 
 			"think", "attempt", "ask", "change", "choose", "talk", "yell", "whisper", "count", "cook", "cut", "cry", 
@@ -14,7 +17,7 @@ public interface ChatTone {
 	final String[] WELLBEING_QUESTIONS = { "how are you", "are you well", "youre well" };
 	final String[] STUCK_PHRASES = {"How was your day?", "What is your favorite food?", "How tall are you?"};
 	
-	public default String getResponseFromMessage(ChatResponse chatResponse) {
+	public default String getResponseFromMessage(ChatResponse chatResponse, String botName) {
 		String verb = null;
 		boolean confirm = false;
 		boolean deny = false;
@@ -63,6 +66,9 @@ public interface ChatTone {
 		}
 		
 		String botMsg = "";
+		if (chatResponse.getMessage().contains("what is your name")) {
+			botMsg += "My name is " + botName + ". ";
+		}
 		if (introduction) {
 			botMsg += "Hello! ";
 		}
@@ -105,20 +111,27 @@ public interface ChatTone {
 		} else if (positive && negative) {
 			botMsg += "I'm not sure how to feel. ";
 			if (verb != null) {
-				botMsg += "Why are you " + verb + "ing?";
+				botMsg += "Why are you " + verb + "ing? ";
 			}
 		}
-		
+		Random r = new Random();
 		if (botMsg.equals("")) {
-			Random r = new Random();
 			botMsg = STUCK_PHRASES[r.nextInt(STUCK_PHRASES.length)];
 			if (chatResponse.getLastResponse() != null ) {
 				for (String sp: STUCK_PHRASES) {
 					if (chatResponse.getLastResponse().getResponse().contains(sp)) {
-						botMsg = "Cool!";
+						botMsg = "Cool! ";
 					}
 				}
 			}		
+		} else {
+			for (String sp: STUCK_PHRASES) {
+				if (chatResponse.getLastResponse() != null ) {
+					if (chatResponse.getLastResponse().getResponse().equalsIgnoreCase(sp)) {
+						botMsg += STUCK_PHRASES[r.nextInt(STUCK_PHRASES.length)] + " ";
+					}
+				}
+			}
 		}
 		
 		return botMsg;

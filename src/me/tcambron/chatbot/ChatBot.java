@@ -1,5 +1,9 @@
 package me.tcambron.chatbot;
 
+/**
+ * @author Tyler Cambron
+ *
+ */
 public class ChatBot {
 	protected String name;
 	protected ChatResponse response;
